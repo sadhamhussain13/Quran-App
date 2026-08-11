@@ -2,13 +2,23 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Qur'an App</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
+
 
 <body>
 
@@ -17,59 +27,129 @@
         <h1>Qur'an</h1>
 
         <p class="subtitle">
-            Read the Qur'an with Arabic text and English translation
+            Read and search the Qur'an
         </p>
 
-        <div class="search-section">
 
-    <h2>Search Qur'an</h2>
+        <!-- ========================= -->
+        <!-- SEARCH SECTION -->
+        <!-- ========================= -->
 
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search English translation..."
-    >
+        <section class="control-section">
 
-    <button id="searchButton">
-        Search
-    </button>
-
-</div>
-
-<div id="searchResults"></div>
-
-        <label for="surahSelect">
-            Select Surah
-        </label>
-
-        <select id="surahSelect">
-            <option value="">Select a Surah</option>
-        </select>
-
-        <label for="ayahSelect">
-            Select Ayah
-        </label>
-
-        <select id="ayahSelect" disabled>
-            <option value="">Select an Ayah</option>
-        </select>
-
-        <button id="loadAyah">
-            Read Ayah
-        </button>
-
-        <div id="surahInfo"></div>
-
-        <div id="verses"></div>
+            <h2>🔎 Search</h2>
 
 
-        <div id="surahInfo"></div>
+            <div class="search-row">
 
-        <div id="verses"></div>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search English translation..."
+                >
+
+                <button id="searchButton">
+                    Search
+                </button>
+
+                <button id="clearButton">
+                    Clear
+                </button>
+
+            </div>
+
+
+            <div class="filter-row">
+
+                <label for="searchSurah">
+                    Search in:
+                </label>
+
+                <select id="searchSurah">
+
+                    <option value="">
+                        All Surahs
+                    </option>
+
+                </select>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ========================= -->
+        <!-- READ SECTION -->
+        <!-- ========================= -->
+
+        <section class="control-section">
+
+            <h2>📖 Read</h2>
+
+
+            <label for="surahSelect">
+                Surah
+            </label>
+
+            <select id="surahSelect">
+
+                <option value="">
+                    Select a Surah
+                </option>
+
+            </select>
+
+
+            <label for="ayahSelect">
+                Ayah
+            </label>
+
+            <div class="ayah-row">
+
+                <select
+                    id="ayahSelect"
+                    disabled
+                >
+
+                    <option value="">
+                        Select an Ayah
+                    </option>
+
+                </select>
+
+
+                <button id="loadAyah">
+                    Read Ayah
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ========================= -->
+        <!-- CONTENT -->
+        <!-- ========================= -->
+
+        <section id="content">
+
+            <div id="surahInfo"></div>
+
+            <div id="verses"></div>
+
+            <div id="searchResults"></div>
+
+        </section>
+
 
     </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <script
+        src="{{ url_for('static', filename='app.js') }}"
+    ></script>
 
 </body>
 

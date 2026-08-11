@@ -1,98 +1,986 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f5f5f5;
-    color: #222;
-}
+/* =========================================
+   GLOBAL
+   ========================================= */
 
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-.subtitle {
-    text-align: center;
-    color: #666;
-}
-
-label {
-    display: block;
-    margin-top: 30px;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-select {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-}
-
-#surahInfo {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.verse {
-    background: white;
-    padding: 25px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-}
-
-.ayah-number {
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.arabic {
-    direction: rtl;
-    text-align: right;
-    font-size: 28px;
-    line-height: 2;
-    margin-bottom: 20px;
-}
-
-.english {
-    font-size: 17px;
-    line-height: 1.7;
-    color: #444;
-}
-
-button {
-    margin-top: 15px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    opacity: 0.85;
-}
-
-select {
-    margin-bottom: 15px;
-}
-
-.search-section {
-    margin-bottom: 30px;
-}
-
-#searchInput {
-    width: 70%;
-    padding: 12px;
-    font-size: 16px;
+* {
     box-sizing: border-box;
 }
 
-#searchButton {
-    margin-top: 0;
-    margin-left: 5px;
+:root {
+    --bg-main: #071a17;
+    --bg-secondary: #0b2420;
+
+    --glass: rgba(255, 255, 255, 0.075);
+    --glass-strong: rgba(255, 255, 255, 0.11);
+    --glass-border: rgba(255, 255, 255, 0.14);
+
+    --text-main: #f4f7f5;
+    --text-soft: #b8c9c4;
+    --text-muted: #8fa7a0;
+
+    --accent: #72c7a5;
+    --accent-soft: rgba(114, 199, 165, 0.16);
+
+    --shadow:
+        0 20px 50px rgba(0, 0, 0, 0.28);
+
+    --radius: 18px;
+}
+
+
+/* =========================================
+   BODY
+   ========================================= */
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: var(--text-main);
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(114, 199, 165, 0.10),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(84, 154, 130, 0.10),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            var(--bg-main),
+            var(--bg-secondary)
+        );
+
+    position: relative;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   SUBTLE ISLAMIC GEOMETRIC PATTERN
+   ========================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.08;
+
+    background-image:
+        linear-gradient(
+            30deg,
+            rgba(255, 255, 255, 0.35) 12%,
+            transparent 12.5%,
+            transparent 87%,
+            rgba(255, 255, 255, 0.35) 87.5%,
+            rgba(255, 255, 255, 0.35)
+        ),
+        linear-gradient(
+            150deg,
+            rgba(255, 255, 255, 0.35) 12%,
+            transparent 12.5%,
+            transparent 87%,
+            rgba(255, 255, 255, 0.35) 87.5%,
+            rgba(255, 255, 255, 0.35)
+        );
+
+    background-size: 70px 70px;
+
+    z-index: -2;
+}
+
+
+/* Soft glow */
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    top: -200px;
+    right: -150px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(114, 199, 165, 0.12),
+            transparent 70%
+        );
+
+    pointer-events: none;
+
+    z-index: -1;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+   ========================================= */
+
+.container {
+
+    width: min(
+        100% - 32px,
+        1000px
+    );
+
+    margin: 0 auto;
+
+    padding: 55px 0 80px;
+}
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+h1 {
+
+    text-align: center;
+
+    margin: 0;
+
+    font-size: clamp(
+        2.4rem,
+        6vw,
+        4rem
+    );
+
+    font-weight: 600;
+
+    letter-spacing: -1px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #a7d9c4
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+.subtitle {
+
+    text-align: center;
+
+    color: var(--text-soft);
+
+    margin:
+        12px auto 40px;
+
+    font-size: 1rem;
+
+    max-width: 600px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   GLASS SECTIONS
+   ========================================= */
+
+.control-section {
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    border:
+        1px solid var(--glass-border);
+
+    border-radius:
+        var(--radius);
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        var(--shadow);
+
+    overflow: hidden;
+}
+
+
+/* Top glass shine */
+
+.control-section::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 10%;
+
+    width: 80%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.35),
+            transparent
+        );
+}
+
+
+.control-section h2 {
+
+    margin:
+        0 0 20px;
+
+    font-size: 1.15rem;
+
+    font-weight: 600;
+
+    color: #e8f4ef;
+}
+
+
+/* =========================================
+   SEARCH ROW
+   ========================================= */
+
+.search-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        auto;
+
+    gap: 10px;
+
+    align-items: center;
+}
+
+
+.search-row input {
+
+    width: 100%;
+}
+
+
+/* =========================================
+   INPUTS & SELECTS
+   ========================================= */
+
+input,
+select {
+
+    width: 100%;
+
+    min-height: 48px;
+
+    padding:
+        0 15px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.13);
+
+    border-radius: 12px;
+
+    background:
+        rgba(0, 0, 0, 0.20);
+
+    color:
+        var(--text-main);
+
+    outline: none;
+
+    font-size: 0.95rem;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+input::placeholder {
+
+    color:
+        var(--text-muted);
+}
+
+
+input:focus,
+select:focus {
+
+    border-color:
+        rgba(114, 199, 165, 0.65);
+
+    background:
+        rgba(0, 0, 0, 0.28);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(114, 199, 165, 0.10);
+}
+
+
+/* Select dropdown */
+
+select option {
+
+    background:
+        #102b26;
+
+    color:
+        white;
+}
+
+
+/* =========================================
+   SEARCH FILTER
+   ========================================= */
+
+.filter-row {
+
+    display: grid;
+
+    grid-template-columns:
+        auto
+        minmax(200px, 1fr);
+
+    gap: 12px;
+
+    align-items: center;
+
+    margin-top: 15px;
+}
+
+
+.filter-row label {
+
+    color:
+        var(--text-soft);
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================
+   AYAH ROW
+   ========================================= */
+
+.ayah-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+
+    gap: 10px;
+}
+
+
+/* =========================================
+   LABELS
+   ========================================= */
+
+label {
+
+    display: block;
+
+    margin:
+        0 0 8px;
+
+    color:
+        var(--text-soft);
+
+    font-size: 0.9rem;
+
+    font-weight: 500;
+}
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+button {
+
+    min-height: 48px;
+
+    padding:
+        0 19px;
+
+    border:
+        1px solid
+        rgba(114, 199, 165, 0.25);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(114, 199, 165, 0.22),
+            rgba(114, 199, 165, 0.10)
+        );
+
+    color:
+        #e9f8f1;
+
+    font-size:
+        0.92rem;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    white-space:
+        nowrap;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+button:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(114, 199, 165, 0.32),
+            rgba(114, 199, 165, 0.15)
+        );
+
+    border-color:
+        rgba(114, 199, 165, 0.45);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.20);
+}
+
+
+button:active {
+
+    transform:
+        translateY(0);
+}
+
+
+button:disabled {
+
+    opacity:
+        0.35;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================
+   CONTENT
+   ========================================= */
+
+#content {
+
+    margin-top:
+        30px;
+}
+
+
+#surahInfo {
+
+    text-align:
+        center;
+
+    margin:
+        35px 0 25px;
+}
+
+
+#surahInfo h2 {
+
+    margin:
+        0 0 8px;
+
+    font-size:
+        2rem;
+
+    font-weight:
+        500;
+}
+
+
+#surahInfo h3 {
+
+    margin:
+        0;
+
+    color:
+        var(--text-soft);
+
+    font-weight:
+        400;
+}
+
+
+/* =========================================
+   VERSE GLASS CARD
+   ========================================= */
+
+.verse {
+
+    position:
+        relative;
+
+    margin-bottom:
+        18px;
+
+    padding:
+        28px;
+
+    border-radius:
+        var(--radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.085),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.11);
+
+    backdrop-filter:
+        blur(14px);
+
+    -webkit-backdrop-filter:
+        blur(14px);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.verse:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(114, 199, 165, 0.25);
+}
+
+
+/* =========================================
+   AYAH NUMBER
+   ========================================= */
+
+.ayah-number {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    padding:
+        6px 10px;
+
+    margin-bottom:
+        20px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--accent-soft);
+
+    color:
+        var(--accent);
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.2px;
+}
+
+
+/* =========================================
+   ARABIC
+   ========================================= */
+
+.arabic {
+
+    direction:
+        rtl;
+
+    text-align:
+        right;
+
+    font-family:
+        "Noto Naskh Arabic",
+        "Amiri",
+        "Traditional Arabic",
+        serif;
+
+    font-size:
+        clamp(
+            1.8rem,
+            4vw,
+            2.4rem
+        );
+
+    line-height:
+        2.2;
+
+    margin-bottom:
+        22px;
+
+    color:
+        #f5faf7;
+}
+
+
+/* =========================================
+   ENGLISH TRANSLATION
+   ========================================= */
+
+.english {
+
+    font-size:
+        1rem;
+
+    line-height:
+        1.8;
+
+    color:
+        #c4d3ce;
+}
+
+
+/* =========================================
+   SEARCH RESULTS
+   ========================================= */
+
+.result-info {
+
+    color:
+        var(--text-soft);
+
+    font-size:
+        0.9rem;
+
+    margin:
+        0 0 18px;
+
+}
+
+
+/* =========================================
+   PAGINATION
+   ========================================= */
+
+.pagination {
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    gap:
+        18px;
+
+    margin:
+        30px 0;
+
+    color:
+        var(--text-soft);
+
+    font-size:
+        0.9rem;
+}
+
+
+.pagination button {
+
+    min-height:
+        42px;
+
+    padding:
+        0 15px;
+}
+
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+::-webkit-scrollbar {
+
+    width:
+        8px;
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        #071a17;
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(114, 199, 165, 0.25);
+
+    border-radius:
+        999px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+
+    background:
+        rgba(114, 199, 165, 0.4);
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+    .container {
+
+        width:
+            min(
+                100% - 20px,
+                1000px
+            );
+
+        padding:
+            30px 0 60px;
+    }
+
+
+    .control-section {
+
+        padding:
+            18px;
+
+        border-radius:
+            15px;
+    }
+
+
+    .search-row {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .search-row input {
+
+        grid-column:
+            1 / -1;
+    }
+
+
+    .search-row button {
+
+        width:
+            100%;
+    }
+
+
+    .filter-row {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            7px;
+    }
+
+
+    .ayah-row {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .ayah-row button {
+
+        width:
+            100%;
+    }
+
+
+    .verse {
+
+        padding:
+            20px;
+
+        border-radius:
+            15px;
+    }
+
+
+    .arabic {
+
+        font-size:
+            1.7rem;
+
+        line-height:
+            2.1;
+    }
+
+
+    .english {
+
+        font-size:
+            0.95rem;
+
+        line-height:
+            1.75;
+    }
+
+
+    .pagination {
+
+        gap:
+            10px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL PHONES
+   ========================================= */
+
+@media (max-width: 420px) {
+
+    .container {
+
+        width:
+            calc(100% - 16px);
+    }
+
+
+    h1 {
+
+        font-size:
+            2.5rem;
+    }
+
+
+    .subtitle {
+
+        font-size:
+            0.9rem;
+
+        margin-bottom:
+            28px;
+    }
+
+
+    .search-row {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .search-row input {
+
+        grid-column:
+            auto;
+    }
+
+
+    .pagination {
+
+        flex-wrap:
+            wrap;
+    }
+
 }

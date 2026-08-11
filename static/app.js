@@ -1,16 +1,11 @@
-const surahSelect = document.getElementById("surahSelect");
-const ayahSelect = document.getElementById("ayahSelect");
-const loadAyahButton = document.getElementById("loadAyah");
+const surahSelect =
+    document.getElementById("surahSelect");
 
-const surahInfo = document.getElementById("surahInfo");
-const versesContainer = document.getElementById("verses");
+const ayahSelect =
+    document.getElementById("ayahSelect");
 
-
-// --------------------------------
-// Store loaded verses
-// --------------------------------
-
-let currentVerses = [];
+const loadAyahButton =
+    document.getElementById("loadAyah");
 
 
 const searchInput =
@@ -19,147 +14,93 @@ const searchInput =
 const searchButton =
     document.getElementById("searchButton");
 
+const clearButton =
+    document.getElementById("clearButton");
+
+const searchSurah =
+    document.getElementById("searchSurah");
+
+
+const surahInfo =
+    document.getElementById("surahInfo");
+
+const versesContainer =
+    document.getElementById("verses");
+
 const searchResults =
     document.getElementById("searchResults");
 
 
-async function searchQuran() {
+// --------------------------------
+// Application state
+// --------------------------------
 
-    const query =
-        searchInput.value.trim();
+let currentVerses = [];
 
-
-    if (!query) {
-
-        searchResults.innerHTML =
-            "<p>Please enter a search term.</p>";
-
-        return;
-    }
-
-
-    try {
-
-        searchResults.innerHTML =
-            "<p>Searching...</p>";
-
-
-        const response =
-            await fetch(
-                `/api/search?q=${encodeURIComponent(query)}`
-            );
-
-
-        const results =
-            await response.json();
-
-
-        if (results.length === 0) {
-
-            searchResults.innerHTML =
-                "<p>No matching verses found.</p>";
-
-            return;
-        }
-
-
-        searchResults.innerHTML = "";
-
-
-        results.forEach((verse) => {
-
-            const result =
-                document.createElement("div");
-
-            result.className = "verse";
-
-
-            result.innerHTML = `
-
-                <div class="ayah-number">
-
-                    Surah ${verse.surah_number}
-                    -
-                    ${verse.surah_english}
-                    |
-                    Ayah ${verse.ayah_number}
-
-                </div>
-
-                <div class="arabic">
-                    ${verse.arabic}
-                </div>
-
-                <div class="english">
-                    ${verse.english}
-                </div>
-
-            `;
-
-
-            searchResults.appendChild(result);
-
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "Search error:",
-            error
-        );
-
-
-        searchResults.innerHTML =
-            "<p>Something went wrong.</p>";
-
-    }
-}
-
-searchButton.addEventListener(
-    "click",
-    searchQuran
-);
-
-searchInput.addEventListener(
-    "keydown",
-    (event) => {
-
-        if (event.key === "Enter") {
-
-            searchQuran();
-
-        }
-
-    }
-);
+let currentSearchPage = 1;
 
 
 // --------------------------------
-// Load all Surahs
+// Load Surahs
 // --------------------------------
 
 async function loadSurahs() {
 
     try {
 
-        const response = await fetch("/api/surahs");
+        const response =
+            await fetch("/api/surahs");
 
-        const surahs = await response.json();
+
+        const surahs =
+            await response.json();
 
 
         surahs.forEach((surah) => {
 
-            const option = document.createElement("option");
+            // -------------------------
+            // Read dropdown
+            // -------------------------
 
-            option.value = surah.number;
+            const readOption =
+                document.createElement("option");
 
-            option.textContent =
+
+            readOption.value =
+                surah.number;
+
+
+            readOption.textContent =
                 `${surah.number}. ${surah.english} - ${surah.arabic}`;
 
-            surahSelect.appendChild(option);
+
+            surahSelect.appendChild(
+                readOption
+            );
+
+
+            // -------------------------
+            // Search dropdown
+            // -------------------------
+
+            const searchOption =
+                document.createElement("option");
+
+
+            searchOption.value =
+                surah.number;
+
+
+            searchOption.textContent =
+                `${surah.number}. ${surah.english}`;
+
+
+            searchSurah.appendChild(
+                searchOption
+            );
 
         });
+
 
     } catch (error) {
 
@@ -198,34 +139,41 @@ async function loadSurah(surahNumber) {
     try {
 
         const response =
-            await fetch(`/api/surah/${surahNumber}`);
+            await fetch(
+                `/api/surah/${surahNumber}`
+            );
 
-        currentVerses = await response.json();
+
+        currentVerses =
+            await response.json();
 
 
         if (currentVerses.length === 0) {
-
-            console.error("Surah not found.");
 
             return;
         }
 
 
-        // -----------------------------
-        // Display Surah information
-        // -----------------------------
+        const firstVerse =
+            currentVerses[0];
 
-        const firstVerse = currentVerses[0];
 
         surahInfo.innerHTML = `
-            <h2>${firstVerse.surah_arabic}</h2>
-            <h3>${firstVerse.surah_english}</h3>
+
+            <h2>
+                ${firstVerse.surah_arabic}
+            </h2>
+
+            <h3>
+                ${firstVerse.surah_english}
+            </h3>
+
         `;
 
 
-        // -----------------------------
+        // -------------------------
         // Populate Ayah dropdown
-        // -----------------------------
+        // -------------------------
 
         ayahSelect.innerHTML =
             '<option value="">Select an Ayah</option>';
@@ -236,12 +184,18 @@ async function loadSurah(surahNumber) {
             const option =
                 document.createElement("option");
 
-            option.value = verse.ayah_number;
+
+            option.value =
+                verse.ayah_number;
+
 
             option.textContent =
                 `Ayah ${verse.ayah_number}`;
 
-            ayahSelect.appendChild(option);
+
+            ayahSelect.appendChild(
+                option
+            );
 
         });
 
@@ -249,9 +203,11 @@ async function loadSurah(surahNumber) {
         ayahSelect.disabled = false;
 
 
-        // Show complete Surah initially
+        // Show complete Surah
 
-        displayVerses(currentVerses);
+        displayVerses(
+            currentVerses
+        );
 
 
     } catch (error) {
@@ -279,21 +235,37 @@ function displayVerses(verses) {
         const verseElement =
             document.createElement("div");
 
-        verseElement.className = "verse";
+
+        verseElement.className =
+            "verse";
 
 
         verseElement.innerHTML = `
 
             <div class="ayah-number">
+
+                Surah ${verse.surah_number}
+                -
+                ${verse.surah_english}
+
+                |
+
                 Ayah ${verse.ayah_number}
+
             </div>
+
 
             <div class="arabic">
+
                 ${verse.arabic}
+
             </div>
 
+
             <div class="english">
+
                 ${verse.english}
+
             </div>
 
         `;
@@ -304,6 +276,253 @@ function displayVerses(verses) {
         );
 
     });
+}
+
+
+// --------------------------------
+// Search Qur'an
+// --------------------------------
+
+async function searchQuran(page = 1) {
+
+    const query =
+        searchInput.value.trim();
+
+
+    if (!query) {
+
+        searchResults.innerHTML =
+            "<p>Please enter a search term.</p>";
+
+        return;
+    }
+
+
+    currentSearchPage = page;
+
+
+    const selectedSurah =
+        searchSurah.value;
+
+
+    try {
+
+        searchResults.innerHTML =
+            "<p>Searching...</p>";
+
+
+        const url =
+            `/api/search?q=${encodeURIComponent(query)}&page=${page}&surah=${selectedSurah}`;
+
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        if (data.results.length === 0) {
+
+            searchResults.innerHTML = `
+
+                <p>
+                    No matching verses found.
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        searchResults.innerHTML = "";
+
+
+        // -------------------------
+        // Result count
+        // -------------------------
+
+        const resultInfo =
+            document.createElement("p");
+
+
+        resultInfo.className =
+            "result-info";
+
+
+        resultInfo.textContent =
+            `${data.total} matching verses found`;
+
+
+        searchResults.appendChild(
+            resultInfo
+        );
+
+
+        // -------------------------
+        // Display results
+        // -------------------------
+
+        data.results.forEach((verse) => {
+
+            const result =
+                document.createElement("div");
+
+
+            result.className =
+                "verse";
+
+
+            result.innerHTML = `
+
+                <div class="ayah-number">
+
+                    ${verse.surah_number}.
+                    ${verse.surah_english}
+
+                    —
+
+                    Ayah ${verse.ayah_number}
+
+                </div>
+
+
+                <div class="arabic">
+
+                    ${verse.arabic}
+
+                </div>
+
+
+                <div class="english">
+
+                    ${verse.english}
+
+                </div>
+
+            `;
+
+
+            searchResults.appendChild(
+                result
+            );
+
+        });
+
+
+        // -------------------------
+        // Pagination
+        // -------------------------
+
+        const pagination =
+            document.createElement("div");
+
+
+        pagination.className =
+            "pagination";
+
+
+        pagination.innerHTML = `
+
+            <button
+                id="previousPage"
+                ${data.page <= 1 ? "disabled" : ""}
+            >
+                Previous
+            </button>
+
+
+            <span>
+
+                Page ${data.page}
+                of
+                ${data.total_pages}
+
+            </span>
+
+
+            <button
+                id="nextPage"
+                ${data.page >= data.total_pages ? "disabled" : ""}
+            >
+                Next
+            </button>
+
+        `;
+
+
+        searchResults.appendChild(
+            pagination
+        );
+
+
+        // -------------------------
+        // Previous
+        // -------------------------
+
+        document
+            .getElementById("previousPage")
+            .addEventListener(
+                "click",
+                () => {
+
+                    searchQuran(
+                        data.page - 1
+                    );
+
+                }
+            );
+
+
+        // -------------------------
+        // Next
+        // -------------------------
+
+        document
+            .getElementById("nextPage")
+            .addEventListener(
+                "click",
+                () => {
+
+                    searchQuran(
+                        data.page + 1
+                    );
+
+                }
+            );
+
+
+    } catch (error) {
+
+        console.error(
+            "Search error:",
+            error
+        );
+
+
+        searchResults.innerHTML =
+            "<p>Something went wrong.</p>";
+
+    }
+}
+
+
+// --------------------------------
+// Clear everything
+// --------------------------------
+
+function clearSearch() {
+
+    searchInput.value = "";
+
+    searchSurah.value = "";
+
+    searchResults.innerHTML = "";
+
+    currentSearchPage = 1;
+
 }
 
 
@@ -324,7 +543,7 @@ surahSelect.addEventListener(
 
 
 // --------------------------------
-// Load selected Ayah
+// Read selected Ayah
 // --------------------------------
 
 loadAyahButton.addEventListener(
@@ -337,7 +556,9 @@ loadAyahButton.addEventListener(
 
         if (!ayahNumber) {
 
-            displayVerses(currentVerses);
+            displayVerses(
+                currentVerses
+            );
 
             return;
         }
@@ -359,6 +580,48 @@ loadAyahButton.addEventListener(
         }
 
     }
+);
+
+
+// --------------------------------
+// Search button
+// --------------------------------
+
+searchButton.addEventListener(
+    "click",
+    () => {
+
+        searchQuran(1);
+
+    }
+);
+
+
+// --------------------------------
+// Enter key search
+// --------------------------------
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key === "Enter") {
+
+            searchQuran(1);
+
+        }
+
+    }
+);
+
+
+// --------------------------------
+// Clear button
+// --------------------------------
+
+clearButton.addEventListener(
+    "click",
+    clearSearch
 );
 
 

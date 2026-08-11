@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qur'an App</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Qur'an</h1>
+
+        <p class="subtitle">
+            Read the Qur'an with Arabic text and English translation
+        </p>
+
+        <label for="surahSelect">
+            Select Surah
+        </label>
+
+        <select id="surahSelect">
+            <option value="">Select a Surah</option>
+        </select>
+
+        <div id="surahInfo"></div>
+
+        <div id="verses"></div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+
+</html>

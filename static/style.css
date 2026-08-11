@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f5f5f5;
+    color: #222;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+}
+
+label {
+    display: block;
+    margin-top: 30px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+#surahInfo {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.verse {
+    background: white;
+    padding: 25px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.ayah-number {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.arabic {
+    direction: rtl;
+    text-align: right;
+    font-size: 28px;
+    line-height: 2;
+    margin-bottom: 20px;
+}
+
+.english {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #444;
+}

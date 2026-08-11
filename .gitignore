@@ -1,0 +1,16 @@
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables / secrets
+.env
+
+# Downloaded source files
+quran-uthmani.txt
+translation-en.txt
+quran-data.xml
+
+scraper2.py

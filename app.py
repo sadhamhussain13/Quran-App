@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import json
 
 
@@ -70,6 +70,31 @@ def get_surah(surah_number):
     ]
 
     return jsonify(verses)
+
+
+#-----------------------------
+# Search Quran
+#-----------------------------
+
+@app.route("/api/search")
+def search_quran():
+
+    query = request.args.get("q", "").strip().lower()
+
+    if not query:
+        return jsonify([])
+
+    results = []
+
+    for verse in quran:
+
+        english_text = verse["english"].lower()
+
+        if query in english_text:
+
+            results.append(verse)
+
+    return jsonify(results)
 
 
 # -----------------------------

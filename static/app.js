@@ -13,6 +13,128 @@ const versesContainer = document.getElementById("verses");
 let currentVerses = [];
 
 
+const searchInput =
+    document.getElementById("searchInput");
+
+const searchButton =
+    document.getElementById("searchButton");
+
+const searchResults =
+    document.getElementById("searchResults");
+
+
+async function searchQuran() {
+
+    const query =
+        searchInput.value.trim();
+
+
+    if (!query) {
+
+        searchResults.innerHTML =
+            "<p>Please enter a search term.</p>";
+
+        return;
+    }
+
+
+    try {
+
+        searchResults.innerHTML =
+            "<p>Searching...</p>";
+
+
+        const response =
+            await fetch(
+                `/api/search?q=${encodeURIComponent(query)}`
+            );
+
+
+        const results =
+            await response.json();
+
+
+        if (results.length === 0) {
+
+            searchResults.innerHTML =
+                "<p>No matching verses found.</p>";
+
+            return;
+        }
+
+
+        searchResults.innerHTML = "";
+
+
+        results.forEach((verse) => {
+
+            const result =
+                document.createElement("div");
+
+            result.className = "verse";
+
+
+            result.innerHTML = `
+
+                <div class="ayah-number">
+
+                    Surah ${verse.surah_number}
+                    -
+                    ${verse.surah_english}
+                    |
+                    Ayah ${verse.ayah_number}
+
+                </div>
+
+                <div class="arabic">
+                    ${verse.arabic}
+                </div>
+
+                <div class="english">
+                    ${verse.english}
+                </div>
+
+            `;
+
+
+            searchResults.appendChild(result);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Search error:",
+            error
+        );
+
+
+        searchResults.innerHTML =
+            "<p>Something went wrong.</p>";
+
+    }
+}
+
+searchButton.addEventListener(
+    "click",
+    searchQuran
+);
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key === "Enter") {
+
+            searchQuran();
+
+        }
+
+    }
+);
+
+
 // --------------------------------
 // Load all Surahs
 // --------------------------------

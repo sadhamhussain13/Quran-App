@@ -63,6 +63,14 @@ def get_surahs():
 @app.route("/api/surah/<int:surah_number>")
 def get_surah(surah_number):
 
+    # Check valid Surah number
+    if surah_number < 1 or surah_number > 114:
+
+        return jsonify({
+            "error": "Invalid Surah number"
+        }), 400
+
+
     verses = [
 
         verse
@@ -74,8 +82,16 @@ def get_surah(surah_number):
     ]
 
 
-    return jsonify(verses)
+    # Surah number is valid,
+    # but no data was found
+    if not verses:
 
+        return jsonify({
+            "error": "Surah not found"
+        }), 404
+
+
+    return jsonify(verses), 200
 
 # =========================================
 # Search Quran
@@ -104,13 +120,46 @@ def search_quran():
     )
 
 
-    limit = 20
-
+    # =====================================
+    # Validate page
+    # =====================================
 
     if page < 1:
 
-        page = 1
+        return jsonify({
+            "error": "Page must be greater than 0"
+        }), 400
 
+
+    # =====================================
+    # Validate Surah
+    # =====================================
+
+    if surah_number:
+
+        if not surah_number.isdigit():
+
+            return jsonify({
+                "error": "Surah must be a number"
+            }), 400
+
+
+        surah_number_int = int(surah_number)
+
+
+        if surah_number_int < 1 or surah_number_int > 114:
+
+            return jsonify({
+                "error": "Invalid Surah number"
+            }), 400
+
+
+    limit = 20
+
+
+    # =====================================
+    # Empty search
+    # =====================================
 
     if not query:
 
@@ -195,6 +244,27 @@ def search_quran():
         "total_pages": total_pages
 
     })
+
+
+
+# =========================================
+# Error handlers
+# =========================================
+
+@app.errorhandler(404)
+def page_not_found(error):
+
+    return jsonify({
+        "error": "The requested resource was not found"
+    }), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+
+    return jsonify({
+        "error": "Internal server error"
+    }), 500
 
 
 # =========================================
